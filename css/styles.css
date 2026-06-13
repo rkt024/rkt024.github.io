@@ -266,6 +266,14 @@ code, pre, kbd, samp { font-family: var(--font-mono); font-size: 0.875em; }
 .about__learning-tag { padding: var(--space-1) var(--space-3); background: var(--color-bg-elevated); border: 1px solid var(--color-border-light); border-radius: var(--radius-full); font-size: var(--text-sm); color: var(--color-text-secondary); transition: all var(--transition-fast); }
 .about__learning-tag:hover { border-color: var(--color-primary); color: var(--color-primary); background: var(--gradient-primary-soft); }
 
+/* Mission Statement */
+.about__mission { margin-top: var(--space-8); padding: var(--space-6); background: var(--gradient-primary-soft); border: 1px solid rgba(14, 165, 233, 0.2); border-radius: var(--radius-xl); position: relative; overflow: hidden; }
+.about__mission::before { content: ''; position: absolute; top: 0; left: 0; bottom: 0; width: 4px; background: var(--gradient-primary); }
+.about__mission h3 { font-size: var(--text-lg); font-weight: 600; color: var(--color-primary); margin-bottom: var(--space-3); display: flex; align-items: center; gap: var(--space-2); }
+.about__mission h3::before { content: ''; width: 24px; height: 24px; background: var(--color-primary); mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230ea5e9' stroke-width='2'%3E%3Cpath d='M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z'/%3E%3C/svg%3E") center/contain no-repeat; -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230ea5e9' stroke-width='2'%3E%3Cpath d='M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z'/%3E%3C/svg%3E") center/contain no-repeat; }
+.about__mission-text { font-size: var(--text-base); line-height: 1.8; color: var(--color-text-secondary); }
+.about__mission-text strong { color: var(--color-text); font-weight: 600; }
+
 /* ==========================================================================
    SKILLS SECTION
    ========================================================================== */
