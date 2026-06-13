@@ -1,4 +1,17 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none">
-  <rect width="32" height="32" rx="8" fill="#0ea5e9"/>
-  <path d="M8 12h16M8 16h12M8 20h8" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+  <defs>
+    <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0ea5e9;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#8b5cf6;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <rect width="32" height="32" rx="8" fill="url(#grad)"/>
+  <!-- Data pipeline / code brackets symbol -->
+  <path d="M8 10h4M12 10v12M16 10h4M20 10v12M24 10h4" stroke="white" stroke-width="2" stroke-linecap="round"/>
+  <!-- Data flow dots -->
+  <circle cx="10" cy="18" r="1.5" fill="white" opacity="0.9"/>
+  <circle cx="14" cy="18" r="1.5" fill="white" opacity="0.6"/>
+  <circle cx="18" cy="18" r="1.5" fill="white" opacity="0.6"/>
+  <circle cx="22" cy="18" r="1.5" fill="white" opacity="0.6"/>
+  <circle cx="26" cy="18" r="1.5" fill="white" opacity="0.9"/>
 </svg>
