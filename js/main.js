@@ -2,7 +2,9 @@
    MAIN JAVASCRIPT - Portfolio Interactions
    ========================================================================== */
 
-// Navigation Toggle
+// ==========================================================================
+// NAVIGATION
+// ==========================================================================
 const navToggle = document.getElementById('navToggle');
 const navMenu = document.getElementById('navMenu');
 const nav = document.getElementById('nav');
@@ -35,17 +37,13 @@ if (navToggle && navMenu) {
 }
 
 // Nav Scroll Effect
-let lastScroll = 0;
-const scrollThreshold = 50;
-
 function handleNavScroll() {
   const currentScroll = window.scrollY;
-  if (currentScroll > scrollThreshold) {
+  if (currentScroll > 50) {
     nav.classList.add('scrolled');
   } else {
     nav.classList.remove('scrolled');
   }
-  lastScroll = currentScroll;
 }
 
 window.addEventListener('scroll', handleNavScroll, { passive: true });
@@ -72,29 +70,30 @@ function updateActiveNav() {
 
 window.addEventListener('scroll', updateActiveNav, { passive: true });
 
-// Scroll Reveal Animations
+// ==========================================================================
+// SCROLL REVEAL ANIMATIONS
+// ==========================================================================
 function initRevealElements() {
   const elementsToReveal = [
-    { selector: '.about__content > *', delay: true },
-    { selector: '.about__sidebar > *', delay: true },
-    { selector: '.skills__category', delay: true },
-    { selector: '.featured__card', delay: true },
-    { selector: '.project__card', delay: true },
-    { selector: '.experience__item', delay: true },
-    { selector: '.education__card', delay: true },
-    { selector: '.certification__card', delay: true },
-    { selector: '.github__stats-card', delay: false },
-    { selector: '.github__repos-card', delay: false },
-    { selector: '.contact__info > *', delay: true },
-    { selector: '.contact__form', delay: false }
+    '.about__content > *',
+    '.about__sidebar > *',
+    '.skills__category',
+    '.featured__card',
+    '.project__card',
+    '.experience__item',
+    '.education__card',
+    '.certification__card',
+    '.github__stats-card',
+    '.github__repos-card',
+    '.contact__info > *',
+    '.contact__form'
   ];
 
-  elementsToReveal.forEach(({ selector, delay }) => {
+  elementsToReveal.forEach(selector => {
     document.querySelectorAll(selector).forEach((el, index) => {
       el.classList.add('reveal');
-      if (delay) {
-        const delayClass = `reveal-delay-${Math.min(index + 1, 4)}`;
-        el.classList.add(delayClass);
+      if (index < 4) {
+        el.classList.add(`reveal-delay-${index + 1}`);
       }
     });
   });
@@ -118,7 +117,9 @@ const revealObserver = new IntersectionObserver((entries) => {
 
 revealElements.forEach(el => revealObserver.observe(el));
 
-// Hero Counter Animation
+// ==========================================================================
+// HERO COUNTER ANIMATION
+// ==========================================================================
 const statValues = document.querySelectorAll('.hero__stat-value[data-count]');
 
 const counterObserver = new IntersectionObserver((entries) => {
@@ -133,7 +134,6 @@ const counterObserver = new IntersectionObserver((entries) => {
       function animateCounter(currentTime) {
         const elapsed = currentTime - startTime;
         const progress = Math.min(elapsed / duration, 1);
-        // Easing function (easeOutQuart)
         const eased = 1 - Math.pow(1 - progress, 4);
         const current = Math.round(start + (target - start) * eased);
         el.textContent = current;
@@ -151,7 +151,9 @@ const counterObserver = new IntersectionObserver((entries) => {
 
 statValues.forEach(el => counterObserver.observe(el));
 
-// Hero Canvas Particles
+// ==========================================================================
+// HERO CANVAS PARTICLES
+// ==========================================================================
 const heroCanvas = document.getElementById('heroCanvas');
 let particles = [];
 let animationId = null;
@@ -263,7 +265,9 @@ function initHeroCanvas() {
 
 initHeroCanvas();
 
-// Smooth scroll for anchor links
+// ==========================================================================
+// SMOOTH SCROLL FOR ANCHOR LINKS
+// ==========================================================================
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
   anchor.addEventListener('click', function(e) {
     const targetId = this.getAttribute('href');
@@ -286,7 +290,9 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
   });
 });
 
-// GitHub API Integration
+// ==========================================================================
+// GITHUB API INTEGRATION
+// ==========================================================================
 async function fetchGitHubData() {
   const username = 'rkt024';
   
@@ -297,15 +303,24 @@ async function fetchGitHubData() {
     const userData = await userResponse.json();
     
     // Update profile info
-    document.getElementById('githubAvatar').src = userData.avatar_url;
-    document.getElementById('githubName').textContent = userData.name || userData.login;
-    document.getElementById('githubBio').textContent = userData.bio ? `@${userData.login} · ${userData.bio}` : `@${userData.login}`;
+    const avatarEl = document.getElementById('githubAvatar');
+    if (avatarEl) avatarEl.src = userData.avatar_url;
+    
+    const nameEl = document.getElementById('githubName');
+    if (nameEl) nameEl.textContent = userData.name || userData.login;
+    
+    const bioEl = document.getElementById('githubBio');
+    if (bioEl) bioEl.textContent = userData.bio ? `@${userData.login} · ${userData.bio}` : `@${userData.login}`;
     
     // Update stats
-    document.getElementById('statRepos').textContent = userData.public_repos.toLocaleString();
-    document.getElementById('statStars').textContent = '--'; // Will update from repos
-    document.getElementById('statFollowers').textContent = userData.followers.toLocaleString();
-    document.getElementById('statFollowing').textContent = userData.following.toLocaleString();
+    const statRepos = document.getElementById('statRepos');
+    const statStars = document.getElementById('statStars');
+    const statFollowers = document.getElementById('statFollowers');
+    const statFollowing = document.getElementById('statFollowing');
+    
+    if (statRepos) statRepos.textContent = userData.public_repos.toLocaleString();
+    if (statFollowers) statFollowers.textContent = userData.followers.toLocaleString();
+    if (statFollowing) statFollowing.textContent = userData.following.toLocaleString();
     
     // Fetch repositories
     const reposResponse = await fetch(`https://api.github.com/users/${username}/repos?sort=updated&per_page=100`);
@@ -314,7 +329,7 @@ async function fetchGitHubData() {
     
     // Calculate total stars
     const totalStars = repos.reduce((sum, repo) => sum + repo.stargazers_count, 0);
-    document.getElementById('statStars').textContent = totalStars.toLocaleString();
+    if (statStars) statStars.textContent = totalStars.toLocaleString();
     
     // Featured repos (prioritize the main projects)
     const featuredNames = ['pam_final', 'email_sender', 'office_email', 'PDF-Splitter', 'lrims_automation', 'google_collab'];
@@ -335,7 +350,6 @@ async function fetchGitHubData() {
     
   } catch (error) {
     console.warn('GitHub API fetch failed:', error);
-    // Show fallback content
     renderFallbackRepos();
   }
 }
@@ -406,7 +420,9 @@ function escapeHtml(text) {
 // Initialize GitHub data fetching
 fetchGitHubData();
 
-// Contact Form Handling
+// ==========================================================================
+// CONTACT FORM HANDLING
+// ==========================================================================
 const contactForm = document.querySelector('.contact__form');
 
 if (contactForm) {
@@ -462,18 +478,9 @@ if (contactForm) {
   });
 }
 
-// Featured Card Hover Effects
-document.querySelectorAll('.featured__card').forEach(card => {
-  card.addEventListener('mouseenter', () => {
-    card.style.setProperty('--glow-opacity', '0.2');
-  });
-  
-  card.addEventListener('mouseleave', () => {
-    card.style.setProperty('--glow-opacity', '0');
-  });
-});
-
-// Keyboard Navigation for Cards
+// ==========================================================================
+// KEYBOARD NAVIGATION FOR CARDS
+// ==========================================================================
 document.querySelectorAll('.featured__card, .project__card, .github__repo-item').forEach(card => {
   card.addEventListener('keydown', (e) => {
     if (e.key === 'Enter' || e.key === ' ') {
@@ -489,19 +496,25 @@ document.querySelectorAll('.featured__card, .project__card, .github__repo-item')
   card.setAttribute('tabindex', '0');
 });
 
-// Dynamic Year in Footer
+// ==========================================================================
+// DYNAMIC YEAR IN FOOTER
+// ==========================================================================
 const yearElements = document.querySelectorAll('[data-year]');
 yearElements.forEach(el => {
   el.textContent = new Date().getFullYear();
 });
 
-// Console Easter Egg
+// ==========================================================================
+// CONSOLE EASTER EGG
+// ==========================================================================
 console.log('%c👋 Hey there!', 'font-size: 24px; font-weight: bold; color: #0ea5e9;');
 console.log('%cThanks for checking out my portfolio code.', 'font-size: 14px; color: #9db4c8;');
 console.log('%cBuilt with vanilla HTML, CSS & JS — no frameworks needed.', 'font-size: 14px; color: #6b889e;');
 console.log('%c🔗 github.com/rkt024', 'font-size: 14px; color: #0ea5e9;');
 
-// Performance: Lazy load non-critical resources
+// ==========================================================================
+// PERFORMANCE: LAZY LOAD NON-CRITICAL RESOURCES
+// ==========================================================================
 if ('requestIdleCallback' in window) {
   requestIdleCallback(() => {
     // Preload fonts
